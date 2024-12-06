@@ -73,7 +73,7 @@ def test_game():
     print("test_game::is_possible passed")
 
 
-def main():
+def prob1():
     cntrn = "12 red cubes, 13 green cubes, and 14 blue cubes"
     available_cubes = {}
     get_cubes(cntrn, available_cubes)
@@ -81,7 +81,6 @@ def main():
     lines = read_input()
     print(*lines, sep="\n")
     print(cntrn)
-
 
     total = 0
     for line in lines:
@@ -96,6 +95,49 @@ def main():
     print(f"{total = }")
 
 
+def get_min_cubes(line: str):
+    subset_list = line.split(": ")[1].split("; ")
+    out = {}
+    for subset in subset_list:
+        subset = subset.split(", ")
+        for _, cube in enumerate(subset):
+            qty, color = cube.split(" ")
+            qty = int(qty)
+            if out.get(color, float("inf")) > qty:
+                out[color] =  qty
+    return out
+
+
+def multiply(used_cubes: dict):
+    out = None
+    values = used_cubes.values()
+    for v in values:
+        if out is None:
+            out = v
+        else:
+            out *= v
+    return out
+
+
+def prob2():
+
+    lines = read_input()
+    print(*lines, sep="\n")
+
+    total = 0
+    for line in lines:
+        game_id = line.split(":")[0].split(" ")[1].strip()
+        used_cubes = get_max_cubes(line)
+        power = multiply(used_cubes)
+        total += power
+        print(f"game {game_id} | mininum cubes: {used_cubes} | power: {power} | total: {total}")
+
+    print(f"{total = }")
+
+
+
+def main():
+    prob2()
 
 if __name__ == "__main__":
     main()
